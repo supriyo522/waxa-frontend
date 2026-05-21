@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://waxa-backend.onrender.com/api';
 
 const apiClient = axios.create({
   baseURL: API_URL,
@@ -17,32 +17,32 @@ apiClient.interceptors.request.use((config) => {
 
 export const authAPI = {
   signup: (email, password, organization_name) =>
-    apiClient.post('http://localhost:5000/api/auth/signup', { email, password, organization_name }),
+    apiClient.post('https://waxa-backend.onrender.com/api/auth/signup', { email, password, organization_name }),
   login: (email, password) =>
-    apiClient.post('http://localhost:5000/api/auth/login', { email, password }),
+    apiClient.post('https://waxa-backend.onrender.com/api/auth/login', { email, password }),
 };
 
 export const productsAPI = {
   getProducts: (organization_id, search = '') =>
-    apiClient.get('http://localhost:5000/api/products', { params: { organization_id, search } }),
+    apiClient.get('https://waxa-backend.onrender.com/api/products', { params: { organization_id, search } }),
   createProduct: (organization_id, data) =>
-    apiClient.post('http://localhost:5000/api/products', { organization_id, ...data }),
+    apiClient.post('https://waxa-backend.onrender.com/api/products', { organization_id, ...data }),
   updateProduct: (id, organization_id, data) =>
-    apiClient.put(`http://localhost:5000/api/products/${id}`, { organization_id, ...data }),
+    apiClient.put(`https://waxa-backend.onrender.com/api/products/${id}`, { organization_id, ...data }),
   deleteProduct: (id, organization_id) =>
-    apiClient.delete('http://localhost:5000/api/products/${id}', { params: { organization_id } }),
+    apiClient.delete('https://waxa-backend.onrender.com/api/products/${id}', { params: { organization_id } }),
 };
 
 export const dashboardAPI = {
   getDashboard: (organization_id) =>
-    apiClient.get('http://localhost:5000/api/dashboard', { params: { organization_id } }),
+    apiClient.get('https://waxa-backend.onrender.com/api/dashboard', { params: { organization_id } }),
 };
 
 export const settingsAPI = {
   getSettings: (organization_id) =>
-    apiClient.get('http://localhost:5000/api/settings', { params: { organization_id } }),
+    apiClient.get('https://waxa-backend.onrender.com/api/settings', { params: { organization_id } }),
   updateSettings: (organization_id, data) =>
-    apiClient.put('http://localhost:5000/api/settings', { organization_id, ...data }),
+    apiClient.put('https://waxa-backend.onrender.com/api/settings', { organization_id, ...data }),
 };
 
 export default apiClient;
