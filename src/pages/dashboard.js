@@ -1,6 +1,7 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
+import Link from 'next/link';
 import { useAuth } from '../lib/auth';
 import { dashboardAPI } from '../lib/api';
 import styles from '../styles/dashboard.module.css';
@@ -18,13 +19,7 @@ export default function Dashboard() {
     }
   }, [user, loading, router]);
 
-  useEffect(() => {
-    if (user) {
-      loadDashboard();
-    }
-  }, [user]);
-
-  const loadDashboard = async () => {
+  const loadDashboard = useCallback(async () => {
     try {
       const response = await dashboardAPI.getDashboard(user.organization_id);
       setDashData(response.data);
@@ -33,7 +28,13 @@ export default function Dashboard() {
     } finally {
       setDataLoading(false);
     }
-  };
+  }, [user]);
+
+  useEffect(() => {
+    if (user) {
+      loadDashboard();
+    }
+  }, [user, loadDashboard]);
 
   if (loading || dataLoading) {
     return <div>Loading...</div>;
@@ -52,8 +53,8 @@ export default function Dashboard() {
         <nav className={styles.navbar}>
           <h1>StockFlow Dashboard</h1>
           <div className={styles.navLinks}>
-            <a href="/products">Products</a>
-            <a href="/settings">Settings</a>
+            <Link href="/products">Products</Link>
+            <Link href="/settings">Settings</Link>
             <button onClick={logout}>Logout</button>
           </div>
         </nav>

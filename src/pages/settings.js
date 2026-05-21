@@ -1,6 +1,7 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
+import Link from 'next/link';
 import { useAuth } from '../lib/auth';
 import { settingsAPI } from '../lib/api';
 import styles from '../styles/settings.module.css';
@@ -20,13 +21,7 @@ export default function Settings() {
     }
   }, [user, loading, router]);
 
-  useEffect(() => {
-    if (user) {
-      loadSettings();
-    }
-  }, [user]);
-
-  const loadSettings = async () => {
+  const loadSettings = useCallback(async () => {
     try {
       const response = await settingsAPI.getSettings(user.organization_id);
       setSettings(response.data);
@@ -36,7 +31,13 @@ export default function Settings() {
     } finally {
       setDataLoading(false);
     }
-  };
+  }, [user]);
+
+  useEffect(() => {
+    if (user) {
+      loadSettings();
+    }
+  }, [user, loadSettings]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -68,8 +69,8 @@ export default function Settings() {
         <nav className={styles.navbar}>
           <h1>Settings</h1>
           <div className={styles.navLinks}>
-            <a href="/dashboard">Dashboard</a>
-            <a href="/products">Products</a>
+            <Link href="/dashboard">Dashboard</Link>
+            <Link href="/products">Products</Link>
             <button onClick={logout}>Logout</button>
           </div>
         </nav>

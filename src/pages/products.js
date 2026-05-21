@@ -1,6 +1,7 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
+import Link from 'next/link';
 import { useAuth } from '../lib/auth';
 import { productsAPI } from '../lib/api';
 import styles from '../styles/products.module.css';
@@ -29,13 +30,7 @@ export default function Products() {
     }
   }, [user, loading, router]);
 
-  useEffect(() => {
-    if (user) {
-      loadProducts();
-    }
-  }, [user, search]);
-
-  const loadProducts = async () => {
+  const loadProducts = useCallback(async () => {
     try {
       const response = await productsAPI.getProducts(user.organization_id, search);
       setProducts(response.data);
@@ -44,7 +39,13 @@ export default function Products() {
     } finally {
       setDataLoading(false);
     }
-  };
+  }, [user, search]);
+
+  useEffect(() => {
+    if (user) {
+      loadProducts();
+    }
+  }, [user, loadProducts]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -92,8 +93,8 @@ export default function Products() {
         <nav className={styles.navbar}>
           <h1>Products</h1>
           <div className={styles.navLinks}>
-            <a href="/dashboard">Dashboard</a>
-            <a href="/settings">Settings</a>
+            <Link href="/dashboard">Dashboard</Link>
+            <Link href="/settings">Settings</Link>
             <button onClick={logout}>Logout</button>
           </div>
         </nav>

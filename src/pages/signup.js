@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
+import Link from 'next/link';
 import { authAPI } from '../lib/api';
 import { useAuth } from '../lib/auth';
 import styles from '../styles/auth.module.css';
@@ -80,7 +81,7 @@ export default function Signup() {
           </form>
 
           <p className={styles.link}>
-            Already have an account? <a href="/login">Login</a>
+            Already have an account? <Link href="/login">Login</Link>
           </p>
         </div>
       </div>
