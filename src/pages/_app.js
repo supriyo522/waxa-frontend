@@ -6,7 +6,7 @@ function MyApp({ Component, pageProps }) {
   const router = useRouter();
   const { user, loading } = useAuth();
 
-  // Redirect unauthenticated users to login
+
   useEffect(() => {
     const publicPages = ['/', '/login', '/signup'];
     const isPublicPage = publicPages.includes(router.pathname);
